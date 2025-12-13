@@ -1,146 +1,380 @@
-import React, { useState } from ‘react’;
+<!DOCTYPE html>
 
-export default function LingoBridge() {
-const [activePopup, setActivePopup] = useState(null);
-
-const slangTerms = {
-ngl: {
-term: “ngl”,
-meaning: “Not gonna lie”,
-explanation: “Your grandkid is being honest and open with you - this is a good thing!”
-},
-lowkey: {
-term: “lowkey”,
-meaning: “A little bit / kind of / quietly”,
-explanation: “They’re expressing something in a casual, understated way”
-},
-fire: {
-term: “fire”,
-meaning: “Really good / amazing / cool”,
-explanation: “This is a big compliment! They’re excited about something”
-},
-nocap: {
-term: “no cap”,
-meaning: “No lie / I’m being serious”,
-explanation: “They’re emphasising they’re telling the truth - like saying ‘honestly’”
-},
-skull: {
-term: “💀”,
-meaning: “That’s so funny I’m dying”,
-explanation: “Don’t worry - this is positive! It means something made them laugh really hard”
-}
-};
-
-const handleTap = (term) => {
-setActivePopup(activePopup === term ? null : term);
-};
-
-const InfoButton = ({ termKey }) => (
-<button
-onClick={() => handleTap(termKey)}
-className=“inline-flex items-center justify-center w-5 h-5 ml-1 text-xs font-bold text-white bg-blue-500 rounded-full hover:bg-blue-600 active:bg-blue-700 transition-colors”
-style={{ verticalAlign: ‘middle’ }}
->
-i
-</button>
-);
-
-return (
-<div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
-<div className="w-full max-w-sm">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lingo Bridge - Understand Your Grandkids</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
 ```
-    {/* App Header */}
-    <div className="bg-blue-600 text-white text-center py-4 rounded-t-2xl">
-      <h1 className="text-xl font-bold">Lingo Bridge</h1>
-      <p className="text-sm text-blue-100">Understand your grandkids</p>
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f3f4f6;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+    }
+
+    .phone-container {
+        width: 100%;
+        max-width: 380px;
+    }
+
+    .app-header {
+        background: linear-gradient(135deg, #2563eb, #1d4ed8);
+        color: white;
+        text-align: center;
+        padding: 20px;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .app-header h1 {
+        font-size: 24px;
+        margin-bottom: 4px;
+    }
+
+    .app-header p {
+        font-size: 14px;
+        opacity: 0.9;
+    }
+
+    .phone-screen {
+        background: white;
+        padding: 20px;
+        min-height: 400px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    }
+
+    .contact-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding-bottom: 15px;
+        border-bottom: 1px solid #e5e7eb;
+        margin-bottom: 20px;
+    }
+
+    .avatar {
+        width: 45px;
+        height: 45px;
+        background: linear-gradient(135deg, #a855f7, #7c3aed);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .contact-name {
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    .contact-status {
+        font-size: 12px;
+        color: #22c55e;
+    }
+
+    .message-bubble {
+        background: #eff6ff;
+        border-radius: 18px 18px 18px 4px;
+        padding: 16px;
+        max-width: 90%;
+        margin-bottom: 20px;
+    }
+
+    .message-text {
+        color: #1f2937;
+        line-height: 1.8;
+        font-size: 16px;
+    }
+
+    .slang-word {
+        background: #fef9c3;
+        padding: 2px 6px;
+        border-radius: 4px;
+    }
+
+    .i-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        background: #3b82f6;
+        color: white;
+        border: none;
+        border-radius: 50%;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        margin-left: 4px;
+        vertical-align: middle;
+        transition: background 0.2s;
+    }
+
+    .i-button:hover {
+        background: #2563eb;
+    }
+
+    .i-button:active {
+        background: #1d4ed8;
+    }
+
+    .message-time {
+        font-size: 12px;
+        color: #9ca3af;
+        margin-top: 8px;
+    }
+
+    .popup {
+        display: none;
+        background: white;
+        border: 2px solid #3b82f6;
+        border-radius: 16px;
+        padding: 16px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 20px rgba(59, 130, 246, 0.2);
+    }
+
+    .popup.active {
+        display: block;
+        animation: slideIn 0.2s ease-out;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .popup-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .popup-term {
+        background: #dbeafe;
+        color: #1e40af;
+        padding: 4px 12px;
+        border-radius: 6px;
+        font-weight: bold;
+        font-size: 18px;
+    }
+
+    .popup-close {
+        background: none;
+        border: none;
+        font-size: 24px;
+        color: #9ca3af;
+        cursor: pointer;
+        line-height: 1;
+    }
+
+    .popup-close:hover {
+        color: #6b7280;
+    }
+
+    .popup-meaning {
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 6px;
+    }
+
+    .popup-explanation {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .translation-box {
+        display: none;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+        padding: 12px;
+        margin-top: 16px;
+    }
+
+    .translation-box.active {
+        display: block;
+    }
+
+    .translation-label {
+        font-size: 12px;
+        color: #16a34a;
+        font-weight: 600;
+        margin-bottom: 6px;
+    }
+
+    .translation-text {
+        color: #374151;
+        font-size: 14px;
+    }
+
+    .hint-text {
+        text-align: center;
+        color: #9ca3af;
+        font-size: 14px;
+        margin-top: 40px;
+    }
+
+    .hint-text .mini-i {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 16px;
+        height: 16px;
+        background: #3b82f6;
+        color: white;
+        border-radius: 50%;
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .app-footer {
+        background: #e5e7eb;
+        text-align: center;
+        padding: 15px;
+        border-radius: 0 0 20px 20px;
+    }
+
+    .app-footer p {
+        font-size: 12px;
+        color: #6b7280;
+    }
+</style>
+```
+
+</head>
+<body>
+    <div class="phone-container">
+
+```
+    <!-- App Header -->
+    <div class="app-header">
+        <h1>Lingo Bridge</h1>
+        <p>Understand your grandkids</p>
     </div>
 
-    {/* Phone Screen */}
-    <div className="bg-white min-h-96 p-4 shadow-xl">
-      
-      {/* Contact Header */}
-      <div className="flex items-center gap-3 pb-3 border-b border-gray-200 mb-4">
-        <div className="w-10 h-10 bg-purple-400 rounded-full flex items-center justify-center text-white font-bold">
-          E
+    <!-- Phone Screen -->
+    <div class="phone-screen">
+        
+        <!-- Contact Header -->
+        <div class="contact-header">
+            <div class="avatar">E</div>
+            <div>
+                <div class="contact-name">Emma (Grandkid)</div>
+                <div class="contact-status">Online now</div>
+            </div>
         </div>
-        <div>
-          <p className="font-semibold text-gray-800">Emma (Grandkid)</p>
-          <p className="text-xs text-green-500">Online now</p>
-        </div>
-      </div>
 
-      {/* Message Bubble */}
-      <div className="bg-blue-50 rounded-2xl rounded-tl-sm p-4 max-w-[85%] mb-4">
-        <p className="text-gray-800 leading-relaxed">
-          <span className="bg-yellow-100 px-1 rounded">ngl</span>
-          <InfoButton termKey="ngl" />
-          {" "}that was{" "}
-          <span className="bg-yellow-100 px-1 rounded">lowkey</span>
-          <InfoButton termKey="lowkey" />
-          {" "}
-          <span className="bg-yellow-100 px-1 rounded">fire</span>
-          <InfoButton termKey="fire" />
-          {" "}
-          <span className="bg-yellow-100 px-1 rounded">no cap</span>
-          <InfoButton termKey="nocap" />
-          {" "}
-          <span className="bg-yellow-100 px-1 rounded">💀</span>
-          <InfoButton termKey="skull" />
+        <!-- Message Bubble -->
+        <div class="message-bubble">
+            <p class="message-text">
+                <span class="slang-word">ngl</span><button class="i-button" onclick="showPopup('ngl')">i</button>
+                that was
+                <span class="slang-word">lowkey</span><button class="i-button" onclick="showPopup('lowkey')">i</button>
+                <span class="slang-word">fire</span><button class="i-button" onclick="showPopup('fire')">i</button>
+                <span class="slang-word">no cap</span><button class="i-button" onclick="showPopup('nocap')">i</button>
+                <span class="slang-word">💀</span><button class="i-button" onclick="showPopup('skull')">i</button>
+            </p>
+            <p class="message-time">2:34 PM</p>
+        </div>
+
+        <!-- Popup Container -->
+        <div id="popup" class="popup">
+            <div class="popup-header">
+                <span id="popup-term" class="popup-term"></span>
+                <button class="popup-close" onclick="hidePopup()">×</button>
+            </div>
+            <p id="popup-meaning" class="popup-meaning"></p>
+            <p id="popup-explanation" class="popup-explanation"></p>
+        </div>
+
+        <!-- Translation Box -->
+        <div id="translation" class="translation-box">
+            <p class="translation-label">💡 What Emma is saying:</p>
+            <p class="translation-text">"Honestly, that was really good - I'm not kidding, it made me laugh!"</p>
+        </div>
+
+        <!-- Hint Text -->
+        <p id="hint" class="hint-text">
+            👆 Tap any blue <span class="mini-i">i</span> button to understand the slang
         </p>
-        <p className="text-xs text-gray-400 mt-2">2:34 PM</p>
-      </div>
-
-      {/* Translation Popup */}
-      {activePopup && (
-        <div className="bg-white border-2 border-blue-500 rounded-xl p-4 shadow-lg mb-4">
-          <div className="flex justify-between items-start mb-2">
-            <span className="bg-blue-100 text-blue-800 px-2 py-1 rounded font-bold text-lg">
-              {slangTerms[activePopup].term}
-            </span>
-            <button 
-              onClick={() => setActivePopup(null)}
-              className="text-gray-400 hover:text-gray-600 text-xl leading-none"
-            >
-              ×
-            </button>
-          </div>
-          <p className="font-semibold text-gray-800 mb-1">
-            Means: "{slangTerms[activePopup].meaning}"
-          </p>
-          <p className="text-gray-600 text-sm">
-            {slangTerms[activePopup].explanation}
-          </p>
-        </div>
-      )}
-
-      {/* Translated Summary */}
-      {activePopup && (
-        <div className="bg-green-50 border border-green-200 rounded-xl p-3">
-          <p className="text-xs text-green-600 font-semibold mb-1">💡 What Emma is saying:</p>
-          <p className="text-gray-700 text-sm">
-            "Honestly, that was really good - I'm not kidding, it made me laugh!"
-          </p>
-        </div>
-      )}
-
-      {/* Hint Text */}
-      {!activePopup && (
-        <div className="text-center text-gray-400 text-sm mt-8">
-          👆 Tap any blue <span className="inline-flex items-center justify-center w-4 h-4 text-xs font-bold text-white bg-blue-500 rounded-full">i</span> button to understand the slang
-        </div>
-      )}
 
     </div>
 
-    {/* App Footer */}
-    <div className="bg-gray-200 text-center py-3 rounded-b-2xl">
-      <p className="text-xs text-gray-500">iTabs Technology - Bridging Generations</p>
+    <!-- App Footer -->
+    <div class="app-footer">
+        <p>iTabs Technology - Bridging Generations</p>
     </div>
 
-  </div>
 </div>
+
+<script>
+    const slangData = {
+        ngl: {
+            term: "ngl",
+            meaning: 'Means: "Not gonna lie"',
+            explanation: "Your grandkid is being honest and open with you - this is a good thing!"
+        },
+        lowkey: {
+            term: "lowkey",
+            meaning: 'Means: "A little bit / kind of / quietly"',
+            explanation: "They're expressing something in a casual, understated way"
+        },
+        fire: {
+            term: "fire",
+            meaning: 'Means: "Really good / amazing / cool"',
+            explanation: "This is a big compliment! They're excited about something"
+        },
+        nocap: {
+            term: "no cap",
+            meaning: 'Means: "No lie / I\'m being serious"',
+            explanation: "They're emphasising they're telling the truth - like saying 'honestly'"
+        },
+        skull: {
+            term: "💀",
+            meaning: 'Means: "That\'s so funny I\'m dying"',
+            explanation: "Don't worry - this is positive! It means something made them laugh really hard"
+        }
+    };
+
+    function showPopup(term) {
+        const data = slangData[term];
+        
+        document.getElementById('popup-term').textContent = data.term;
+        document.getElementById('popup-meaning').textContent = data.meaning;
+        document.getElementById('popup-explanation').textContent = data.explanation;
+        
+        document.getElementById('popup').classList.add('active');
+        document.getElementById('translation').classList.add('active');
+        document.getElementById('hint').style.display = 'none';
+    }
+
+    function hidePopup() {
+        document.getElementById('popup').classList.remove('active');
+    }
+</script>
 ```
 
-);
-}
+</body>
+</html>
